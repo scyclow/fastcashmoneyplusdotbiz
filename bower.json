@@ -1,0 +1,32 @@
+{
+  "name": "FASTCASHMONEYPLUS.biz",
+  "version": "0.1.0",
+  "homepage": "fastcashmoneyplus.biz",
+  "authors": [
+    "scyclow <spike716@gmail.com>"
+  ],
+  "description": "The best fastcashmoney site on the net!",
+  "main": "src/scripts/app.js",
+  "keywords": [
+    "gulp",
+    "es6",
+    "browserify",
+    "react",
+    "fastcashmoneyplus",
+    "fast",
+    "cash",
+    "money",
+    "plus"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "~0.13.3"
+  }
+}
