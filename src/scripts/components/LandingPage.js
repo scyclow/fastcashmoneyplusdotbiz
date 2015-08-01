@@ -7,9 +7,12 @@ class LandingPage extends React.Component {
 
   render() {
     return (
-      <body>
+      <div>
+        <div className="tag-line">
+          The Hottest Crypto-Currency Alternative on The Web
+        </div>
         <CallToAction />
-      </body>
+      </div>
     );
   }
 }
