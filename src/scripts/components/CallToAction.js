@@ -1,23 +1,41 @@
+import mouseHandler from '../handlers/mouseHandler';
+import { modifyHexHue } from '../helpers/colors';
+
 class CallToAction extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      x: 0,
-      y: 0
+      xDiff: 0,
+      yDiff: 0
     };
+
+    this.primaryColor = '#ff0000';
+
+    this.styles = {
+      color: this.primaryColor,
+      backgroundColor: this.primaryColors,
+      width: 200
+    };
+
+    this.registrationKey = 'CallToAction';
   }
 
   componentDidMount() {
-    document.onmousemove = (e) => {
-      let mousePosition = {
-        x: e.clientX, y: e.clientY
-      };
+    mouseHandler.register(this.registrationKey, (mouseCoords) => {
+      let xDiff = Math.abs(this.position.x - mouseCoords.x);
+      let yDiff = Math.abs(this.position.y - mouseCoords.y);
 
-      let xDiff = Math.abs(this.position.x - mousePosition.x);
-      let yDiff = Math.abs(this.position.y - mousePosition.y);
       this.setState({xDiff, yDiff});
-    };
+    });
+  }
 
+  componentWillUnmount() {
+    mouseHandler.unregister(this.registrationKey);
+  }
+
+  updateColors() {
+    this.styles.backgroundColor = modifyHexHue(this.primaryColor, this.state.xDiff);
+    this.styles.color = modifyHexHue(this.primaryColor, this.state.yDiff);
   }
 
   get position() {
@@ -28,8 +46,11 @@ class CallToAction extends React.Component {
   }
 
   render() {
+    this.updateColors();
     return (
-      <button>{this.state.xDiff} -- {this.state.yDiff}</button>
+      <button style={this.styles}>
+        {this.state.xDiff} -- {this.state.yDiff}
+      </button>
     );
   }
 }

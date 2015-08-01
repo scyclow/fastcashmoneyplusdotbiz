@@ -1,44 +1,44 @@
 // 255 => 'ff'
 function cToHex(c) {
-  var hex = Math.round(c).toString(16);
+  let hex = Math.round(c).toString(16);
   return (hex.length === 1) ? '0' + hex : hex;
-};
+}
 
 // { r:255, g:0, b:0 } => '#ff0000'
 function rgbToHex(rgb) {
-  var r = cToHex(rgb.r);
-  var g = cToHex(rgb.g);
-  var b = cToHex(rgb.b);
+  let r = cToHex(rgb.r);
+  let g = cToHex(rgb.g);
+  let b = cToHex(rgb.b);
 
   return ['#', r, g, b].join('');
-};
+}
 
 // 'ff' => 255
 function hexToC(hex) {
   return parseInt(hex, 16);
-};
+}
 // '#ff0000' => { r:255, g:0, b:0 }
 function hexToRgb(hex) {
-  var r = hexToC( hex.slice(1, 3) );
-  var g = hexToC( hex.slice(3, 5) );
-  var b = hexToC( hex.slice(5, 7) );
+  let r = hexToC( hex.slice(1, 3) );
+  let g = hexToC( hex.slice(3, 5) );
+  let b = hexToC( hex.slice(5, 7) );
 
   return {r: r, g: g, b: b};
-};
+}
 
 // http://www.rapidtables.com/convert/color/rgb-to-hsv.htm
 // {r: 255, g: 0, b: 255} => {h: 100, s: 1, v: 1}
 function rgbToHsv(rgb) {
-  var r = rgb.r / 255;
-  var g = rgb.g / 255;
-  var b = rgb.b / 255;
-  var max = Math.max(r, g, b);
-  var min = Math.min(r, g, b);
-  var diff = max - min;
-  var value = max;
-  var saturation = max ? diff / max : 0;
+  let r = rgb.r / 255;
+  let g = rgb.g / 255;
+  let b = rgb.b / 255;
+  let max = Math.max(r, g, b);
+  let min = Math.min(r, g, b);
+  let diff = max - min;
+  let value = max;
+  let saturation = max ? diff / max : 0;
 
-  var hue;
+  let hue;
   if (!diff) {
     hue = 0;
 
@@ -57,15 +57,15 @@ function rgbToHsv(rgb) {
   hue *= 60;
 
   return {h: hue, s: saturation, v: value};
-};
+}
 
 function hsvToRgb(hsv) {
-  var c = hsv.v * hsv.s;
-  var h = hsv.h / 60;
-  var x = c * (1 - Math.abs(h % 2 - 1))
-  var m = hsv.v - c;
+  let c = hsv.v * hsv.s;
+  let h = hsv.h / 60;
+  let x = c * (1 - Math.abs(h % 2 - 1));
+  let m = hsv.v - c;
 
-  var r, g, b;
+  let r, g, b;
   switch( Math.floor(h) ) {
     case 0:
     case 6:
@@ -80,21 +80,34 @@ function hsvToRgb(hsv) {
       r = x; g = 0; b = c; break;
     case 5:
       r = c; g = 0; b = x; break;
-  };
+  }
 
   return {
     r: (r + m) * 255,
     g: (g + m) * 255,
-    b: (b + m) * 255,
+    b: (b + m) * 255
   };
-};
+}
 
 function hsvToHex(hsv) {
-  var rgb = hsvToRgb(hsv);
+  let rgb = hsvToRgb(hsv);
   return rgbToHex(rgb);
-};
+}
 
-function increaseHue(hsv) {
-  hsv.h += 1;
-  if (hsv.h > 360) { hsv.h = 0; }
-};
+function hexToHsv(hex) {
+  return rgbToHsv( hexToRgb(hex) );
+}
+
+function applyHue(hsv, amount=1) {
+  let {h, s, v} = hsv;
+  h = amount % 360;
+  return { h, s, v };
+}
+
+function modifyHexHue(hex, amount) {
+  let hsv = hexToHsv(hex);
+  hsv = applyHue(hsv, Math.round(amount));
+  return hsvToHex(hsv);
+}
+
+export default { modifyHexHue, hsvToHex };
