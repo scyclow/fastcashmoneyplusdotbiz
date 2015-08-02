@@ -1,5 +1,6 @@
 const mouseHandler = {
   queue: {},
+  target: { x: 0, y: 0},
   register(id, fn) {
     if (this.queue[id]) {
       console.log(`${id} is already registered`);
@@ -17,11 +18,34 @@ const mouseHandler = {
     delete this.queue[id];
   },
 
+  getTargetDist(coords) {
+    let xDiff = Math.abs(this.target.x - coords.x);
+    let yDiff = Math.abs(this.target.y - coords.y);
+
+    return {
+      xDiff, yDiff,
+      targetDist: Math.sqrt(xDiff**2 + yDiff**2)
+    };
+  },
+
   update(coords) {
+    Object.assign(coords, this.getTargetDist(coords));
     for (let i in this.queue) {
       let fn = this.queue[i];
       fn(coords);
     }
+  },
+
+  updateTarget(elem, remove=false) {
+    let x, y;
+
+    if (remove) {
+      [x, y] = [0, 0];
+    } else {
+      x = elem.offsetLeft + (elem.offsetWidth / 2);
+      y = elem.offsetTop + (elem.offsetHeight / 2);
+    }
+    this.target = { x, y };
   }
 };
 

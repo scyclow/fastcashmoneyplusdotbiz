@@ -14,7 +14,8 @@
   },
   "rules": {
     "quotes": [2, "single"],
-    "eqeqeq": 1
+    "eqeqeq": 1,
+    "consistent-return": 0
   },
   "globals": {
     "React": false

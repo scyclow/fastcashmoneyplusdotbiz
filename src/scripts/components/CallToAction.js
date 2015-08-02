@@ -6,7 +6,8 @@ class CallToAction extends React.Component {
     super(props);
     this.state = {
       xDiff: 0,
-      yDiff: 0
+      yDiff: 0,
+      targetDist: 0
     };
 
     this.primaryColor = '#ff0000';
@@ -21,35 +22,38 @@ class CallToAction extends React.Component {
   }
 
   componentDidMount() {
-    mouseHandler.register(this.registrationKey, (mouseCoords) => {
-      let xDiff = Math.abs(this.position.x - mouseCoords.x);
-      let yDiff = Math.abs(this.position.y - mouseCoords.y);
+    this.elem = React.findDOMNode(this);
 
-      this.setState({xDiff, yDiff});
+    mouseHandler.updateTarget(this.elem);
+    mouseHandler.register(this.registrationKey, (mouseCoords) => {
+      let { xDiff, yDiff, targetDist } = mouseCoords;
+
+      this.setState({ xDiff, yDiff, targetDist });
     });
   }
 
   componentWillUnmount() {
     mouseHandler.unregister(this.registrationKey);
+    mouseHandler.updateTarget(this.elem, true);
   }
 
   updateColors() {
-    this.styles.backgroundColor = modifyHexHue(this.primaryColor, this.state.xDiff);
-    this.styles.color = modifyHexHue(this.primaryColor, this.state.yDiff);
-  }
+    this.styles.backgroundColor = modifyHexHue(
+      this.primaryColor,
+      this.state.targetDist
+    );
 
-  get position() {
-    let elem = React.findDOMNode(this);
-    let x = elem.offsetLeft + (elem.offsetWidth / 2);
-    let y = elem.offsetTop + (elem.offsetHeight / 2);
-    return { x, y };
+    this.styles.color = modifyHexHue(
+      this.primaryColor,
+      this.state.targetDist + 180
+    );
   }
 
   render() {
     this.updateColors();
     return (
       <button style={this.styles}>
-        {this.state.xDiff} -- {this.state.yDiff}
+        {this.state.targetDist}
       </button>
     );
   }

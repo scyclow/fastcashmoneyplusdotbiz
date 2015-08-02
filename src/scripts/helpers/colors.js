@@ -104,7 +104,12 @@ function applyHue(hsv, amount=1) {
   return { h, s, v };
 }
 
-function modifyHexHue(hex, amount) {
+function modifyHexHue(hex, amount=1) {
+  if (isNaN(amount)) {
+    console.log(`${amount} is not a valid amount`);
+    return hex;
+  }
+
   let hsv = hexToHsv(hex);
   hsv = applyHue(hsv, Math.round(amount));
   return hsvToHex(hsv);
