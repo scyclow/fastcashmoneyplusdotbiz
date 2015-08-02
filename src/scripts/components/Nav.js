@@ -1,3 +1,5 @@
+import colorStore from '../stores/colorStore';
+
 class Nav extends React.Component {
   constructor(props) {
     super(props);
@@ -6,8 +8,6 @@ class Nav extends React.Component {
       position: 'fixed',
       width: '100%',
       height: 50,
-      backgroundColor: 'blue',
-      color: 'white',
       textAlign: 'center',
       fontSize: 20
     };
@@ -18,7 +18,20 @@ class Nav extends React.Component {
     };
   }
 
+  updateStyles() {
+    let primary = colorStore.colors.primary;
+    let inverse = colorStore.colors.inverse;
+
+    let newStyles = {
+      backgroundColor: inverse,
+      color: primary
+    };
+
+    Object.assign(this.styles, newStyles);
+  }
+
   render() {
+    this.updateStyles();
     return (
       <div className="nav-container">
         <nav style={this.styles}>nav</nav>

@@ -98,21 +98,46 @@ function hexToHsv(hex) {
   return rgbToHsv( hexToRgb(hex) );
 }
 
-function applyHue(hsv, amount=1) {
+function applyHsv(hsv, amount=0, modifier=1) {
+  if (!modifier) {
+    console.log(`${modifier} is not a valid modifier`);
+    return hsv;
+  }
+
   let {h, s, v} = hsv;
-  h = amount % 360;
+
+  let totalH = h + (Math.round(amount) / Math.abs(modifier));
+  let excess = totalH > 360 ? totalH - 360 : 0;
+
+  if (modifier < 0) {
+    totalH += 180;
+  }
+
+  h = (totalH) % 360;
+
+  if (modifier && excess) {
+    s = 1 - ( excess / 360 );
+    s = s > 0 ? s : 0;
+  }
+
+  if (modifier < 0 && excess) {
+    v = s;
+  } else if (modifier > 0) {
+    v = 1;
+  }
+
   return { h, s, v };
 }
 
-function modifyHexHue(hex, amount=1) {
+function modifyHexHsv(hex, amount=0, modifier=1) {
   if (isNaN(amount)) {
     console.log(`${amount} is not a valid amount`);
     return hex;
   }
 
   let hsv = hexToHsv(hex);
-  hsv = applyHue(hsv, Math.round(amount));
+  hsv = applyHsv(hsv, amount, modifier);
   return hsvToHex(hsv);
 }
 
-export default { modifyHexHue, hsvToHex };
+export default { modifyHexHsv, hsvToHex };

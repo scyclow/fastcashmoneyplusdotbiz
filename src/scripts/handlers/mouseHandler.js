@@ -18,18 +18,18 @@ const mouseHandler = {
     delete this.queue[id];
   },
 
-  getTargetDist(coords) {
+  getTargetDistance(coords) {
     let xDiff = Math.abs(this.target.x - coords.x);
     let yDiff = Math.abs(this.target.y - coords.y);
 
     return {
       xDiff, yDiff,
-      targetDist: Math.sqrt(xDiff**2 + yDiff**2)
+      targetDistance: Math.sqrt(xDiff**2 + yDiff**2)
     };
   },
 
   update(coords) {
-    Object.assign(coords, this.getTargetDist(coords));
+    Object.assign(coords, this.getTargetDistance(coords));
     for (let i in this.queue) {
       let fn = this.queue[i];
       fn(coords);
@@ -50,9 +50,10 @@ const mouseHandler = {
 };
 
 document.onmousemove = (e) => {
-  mouseHandler.update({
-    x: e.clientX, y: e.clientY
-  });
+  let x = e.clientX + window.pageXOffset;
+  let y = e.clientY + window.pageYOffset;
+
+  mouseHandler.update({ x, y });
 };
 
 export default mouseHandler;
