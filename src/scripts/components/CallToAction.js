@@ -39,6 +39,7 @@ class CallToAction extends React.Component {
   }
 
   updateStyles() {
+    // TODO: add transition; huge shadow behind button on hover
     let colors = (
       this.state.hover ?
       [colorStore.colors.primary, colorStore.colors.inverse] :
