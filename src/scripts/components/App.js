@@ -7,33 +7,37 @@ import colorStore from '../stores/colorStore';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.styles = {};
+    this.style = {};
+    this.state = {
+      colors: {}
+    };
   }
 
   componentDidMount() {
-    mouseHandler.register('App', () => this.forceUpdate());
+    mouseHandler.register(this, () => this.forceUpdate());
   }
 
-  updateStyles() {
+  updateColors() {
     let primary = colorStore.colors.primary;
     let inverse = colorStore.colors.inverse;
 
-    let newStyles = {
-      backgroundColor: primary,
-      color: inverse
-    };
+    this.state.colors = { primary, inverse };
 
-    Object.assign(this.styles, newStyles);
+    Object.assign(this.style, {
+      color: inverse,
+      backgroundColor: primary
+    });
   }
 
   render() {
-    this.updateStyles();
+    this.updateColors();
+    let colors = this.state.colors;
 
     return (
-      <div style={this.styles}>
-        <Nav />
-        <LandingPage />
-        <Footer />
+      <div style={this.style}>
+        <Nav colors={colors} />
+        <LandingPage colors={colors} />
+        <Footer colors={colors} />
       </div>
     );
   }

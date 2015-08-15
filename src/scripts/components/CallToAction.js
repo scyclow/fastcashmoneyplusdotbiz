@@ -1,71 +1,65 @@
 import mouseHandler from '../handlers/mouseHandler';
-import colorStore from '../stores/colorStore';
 
 class CallToAction extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      xDiff: 0,
-      yDiff: 0,
-      targetDistance: 0
+
+    this.state = { hover: false };
+    this.hoverDist = 20;
+    this.style = {
+      width: 400,
+      height: 400
     };
-
-    this.styles = {
-      width: 200
-    };
-
-    this.registrationKey = 'CallToAction';
-  }
-
-  setStateVar(k, v) {
-    let newState = Object.assign(this.state, {[k]: v});
-    this.setState(newState);
   }
 
   componentDidMount() {
     this.elem = React.findDOMNode(this);
 
-    mouseHandler.updateTarget(this.elem);
-    mouseHandler.register(this.registrationKey, (coords) => {
-      let { xDiff, yDiff, targetDistance } = coords;
-
-      this.setState({ xDiff, yDiff, targetDistance });
-    });
+    mouseHandler.target(this.elem, -this.hoverDist);
   }
 
   componentWillUnmount() {
-    mouseHandler.unregister(this.registrationKey);
-    mouseHandler.updateTarget(this.elem, true);
+    mouseHandler.target();
   }
 
-  updateStyles() {
-    // TODO: add transition; huge shadow behind button on hover
-    let colors = (
-      this.state.hover ?
-      [colorStore.colors.primary, colorStore.colors.inverse] :
-      [colorStore.colors.inverse, colorStore.colors.primary]
-    );
+  updateColors() {
+    let p = this.props.colors.primary;
+    let i = this.props.colors.inverse;
 
-    let [primary, inverse] = colors;
+    let [ primary, inverse, shadow ] = this.state.hover ?
+      [ p, i, this.hoverDist ] : [ i, p, 0 ];
 
-    let newStyles = {
+
+    Object.assign(this.style, {
       backgroundColor: inverse,
       color: primary,
-      borderColor: primary
-    };
+      borderColor: primary,
+      boxShadow: `${shadow}px ${shadow}px ${shadow}px black`,
+      position: 'relative',
+      top: -shadow,
+      left: -shadow,
+      transition: 'box-shadow 0.5s, top 0.5s, left 0.5s'
+    });
+  }
 
-    Object.assign(this.styles, newStyles);
+  _onHover() {
+    this.setState({ hover: true });
+  }
+
+  _onUnHover() {
+    this.setState({ hover: false });
   }
 
   render() {
-    this.updateStyles();
+    this.updateColors();
+
     return (
       <button
-        style={this.styles}
-        onMouseOver={this.setStateVar.bind(this, 'hover', true)}
-        onMouseOut={this.setStateVar.bind(this, 'hover', false)}
+        style={this.style}
+        onMouseOver={this._onHover.bind(this)}
+        onMouseOut={this._onUnHover.bind(this)}
       >
-        {this.state.targetDistance}
+        CLICK HERE
       </button>
     );
   }

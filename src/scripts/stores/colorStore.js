@@ -11,6 +11,10 @@ class ColorStore {
       inverse: modifyHexHsv(this.baseColor, 0, -mod)
     };
 
+    mouseHandler.register(this, (coords) => {
+      colorStore.updateStyles(coords.target.distance);
+    });
+
     this.updateStyles();
   }
 
@@ -29,9 +33,5 @@ class ColorStore {
 }
 
 let colorStore = new ColorStore();
-
-mouseHandler.register('colorStore', (coords) => {
-  colorStore.updateStyles(coords.targetDistance);
-});
 
 export default colorStore;

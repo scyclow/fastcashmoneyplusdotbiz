@@ -1,51 +1,40 @@
 const mouseHandler = {
-  queue: {},
-  target: { x: 0, y: 0},
-  register(id, fn) {
-    if (this.queue[id]) {
-      console.log(`${id} is already registered`);
-      return;
-    }
-
-    this.queue[id] = fn;
+  queue: new Map(),
+  targetCoords: { x: 0, y: 0 },
+  register(obj, fn) {
+    this.queue.set(obj, fn);
   },
 
-  unregister(id) {
-    if (!this.queue[id]) {
-      console.log(`${id} is already registered`);
-      return;
-    }
-    delete this.queue[id];
+  unregister(obj) {
+    this.queue.delete(obj);
   },
 
   getTargetDistance(coords) {
-    let xDiff = Math.abs(this.target.x - coords.x);
-    let yDiff = Math.abs(this.target.y - coords.y);
+    let xDiff = Math.abs(this.targetCoords.x - coords.x);
+    let yDiff = Math.abs(this.targetCoords.y - coords.y);
+    let distance = Math.sqrt(xDiff**2 + yDiff**2);
 
-    return {
-      xDiff, yDiff,
-      targetDistance: Math.sqrt(xDiff**2 + yDiff**2)
-    };
+    return { xDiff, yDiff, distance };
   },
 
   update(coords) {
-    Object.assign(coords, this.getTargetDistance(coords));
-    for (let i in this.queue) {
-      let fn = this.queue[i];
+    coords.target = this.getTargetDistance(coords);
+    for (let fn of this.queue.values()) {
       fn(coords);
     }
   },
 
-  updateTarget(elem, remove=false) {
+  target(elem, disp) {
     let x, y;
 
-    if (remove) {
-      [x, y] = [0, 0];
+    if (elem) {
+      x = elem.offsetLeft + disp + (elem.offsetWidth / 2);
+      y = elem.offsetTop + disp + (elem.offsetHeight / 2);
     } else {
-      x = elem.offsetLeft + (elem.offsetWidth / 2);
-      y = elem.offsetTop + (elem.offsetHeight / 2);
+      [x, y] = [0, 0];
     }
-    this.target = { x, y };
+
+    this.targetCoords = { x, y };
   }
 };
 

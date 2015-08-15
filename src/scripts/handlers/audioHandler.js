@@ -1,15 +1,15 @@
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
 
 const tones = new Set();
 
 class Tone {
   constructor(startValue=200) {
-    this.gainNode = audioCtx.createGain();
-    this.gainNode.connect(audioCtx.destination);
+    this.aCtx = new (window.AudioContext || window.webkitAudioContext)();
+    this.gainNode = this.aCtx.createGain();
+    this.gainNode.connect(this.aCtx.destination);
     this.gainNode.gain.value = 0.02;
 
-    this.oscillator = audioCtx.createOscillator();
+    this.oscillator = this.aCtx.createOscillator();
     this.oscillator.connect(this.gainNode);
 
     this.oscillator.type = 'square';
@@ -56,13 +56,13 @@ class Tone {
   }
 
   upNote(step=8) {
-    const val = this.freq.value;
-    this.freq.value += val / step;
+    const val = this.freq;
+    this.freq += val / step;
   }
 
   downNote(step=8) {
-    const val = this.freq.value;
-    this.freq.value -= (val * 0.5) / step;
+    const val = this.freq;
+    this.freq -= (val * 0.5) / step;
   }
 }
 

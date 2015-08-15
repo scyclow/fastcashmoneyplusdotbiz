@@ -4,38 +4,31 @@ class Nav extends React.Component {
   constructor(props) {
     super(props);
 
-    const styles = {
+    const height = 50;
+    this.fillerStyle = { height };
+    this.style = {
+      height,
       position: 'fixed',
       width: '100%',
-      height: 50,
       textAlign: 'center',
       fontSize: 20
     };
-
-    this.styles = styles;
-    this.filler = {
-      height: styles.height
-    };
   }
 
-  updateStyles() {
-    let primary = colorStore.colors.primary;
-    let inverse = colorStore.colors.inverse;
-
-    let newStyles = {
-      backgroundColor: inverse,
-      color: primary
-    };
-
-    Object.assign(this.styles, newStyles);
+  updateColors() {
+    Object.assign(this.style, {
+      color: this.props.colors.primary,
+      backgroundColor: this.props.colors.inverse
+    });
   }
 
   render() {
-    this.updateStyles();
+    this.updateColors();
+
     return (
       <div className="nav-container">
-        <nav style={this.styles}>nav</nav>
-        <div style={this.filler}></div>
+        <nav style={this.style}>nav</nav>
+        <div style={this.fillerStyle}></div>
       </div>
     );
   }
