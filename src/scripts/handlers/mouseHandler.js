@@ -1,28 +1,77 @@
-const mouseHandler = {
-  queue: new Map(),
-  targetCoords: { x: 0, y: 0 },
+class MouseHandler {
+  constructor() {
+    this._queue = new Map();
+    this._targetCoords = { x: 0, y: 0 };
+    this._coords = {
+      x: 0,
+      y: 0,
+      scrollY: 0,
+      target: {
+        x: 0,
+        y: 0,
+        distance: 0
+      }
+    };
+
+    document.onmousemove = (e) => this._onMouseMove(e);
+    window.addEventListener('scroll', () => this.scrollY = window.scrollY);
+  }
+
+  _onMouseMove(e) {
+    let x = e.clientX + window.pageXOffset;
+    let y = e.clientY + window.pageYOffset;
+    this.coords = { x, y };
+  }
+
+  set coords(coords) {
+    this._coords = coords;
+    this._coords.target = this.getTargetDistance(coords);
+    this.update();
+
+    return this._coords;
+  }
+
+  get coords() {
+    return this._coords;
+  }
+
+  _onScroll() {
+    this.scrollY = window.scrollY;
+  }
+
+  set scrollY(y) {
+    this._coords.scrollY = y;
+    this.update();
+
+    return this._coords.scrollY;
+  }
+
+  get scrollY() {
+    return this._coords.scrollY;
+  }
+
+  update() {
+    for (let fn of this._queue.values()) {
+      fn(this.coords);
+    }
+  }
+
   register(obj, fn) {
-    this.queue.set(obj, fn);
-  },
+    this._queue.set(obj, fn);
+    this.update();
+  }
 
   unregister(obj) {
-    this.queue.delete(obj);
-  },
+    this._queue.delete(obj);
+  }
 
   getTargetDistance(coords) {
-    let xDiff = Math.abs(this.targetCoords.x - coords.x);
-    let yDiff = Math.abs(this.targetCoords.y - coords.y);
-    let distance = Math.sqrt(xDiff**2 + yDiff**2);
+    let xDiff = Math.abs(this._targetCoords.x - coords.x);
+    let yDiff = Math.abs(this._targetCoords.y - coords.y);
+    let distance = Math.sqrt((xDiff ** 2) + (yDiff ** 2));
 
     return { xDiff, yDiff, distance };
-  },
-
-  update(coords) {
-    coords.target = this.getTargetDistance(coords);
-    for (let fn of this.queue.values()) {
-      fn(coords);
-    }
-  },
+  }
 
   target(elem, disp) {
     let x, y;
@@ -34,15 +83,10 @@ const mouseHandler = {
       [x, y] = [0, 0];
     }
 
-    this.targetCoords = { x, y };
+    this._targetCoords = { x, y };
   }
-};
+}
 
-document.onmousemove = (e) => {
-  let x = e.clientX + window.pageXOffset;
-  let y = e.clientY + window.pageYOffset;
-
-  mouseHandler.update({ x, y });
-};
+const mouseHandler = new MouseHandler();
 
 export default mouseHandler;

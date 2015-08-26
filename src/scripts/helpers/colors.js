@@ -98,29 +98,29 @@ function hexToHsv(hex) {
   return rgbToHsv( hexToRgb(hex) );
 }
 
-function applyHsv(hsv, amount=0, modifier=1) {
-  if (!modifier) {
-    console.log(`${modifier} is not a valid modifier`);
-    return hsv;
-  }
-
-  let {h, s, v} = hsv;
-
-  let totalH = h + (Math.round(amount) / Math.abs(modifier));
-  let excess = totalH > 360 ? totalH - 360 : 0;
+function handleOverflow(original, amount, modifier) {
+  let total = original + (Math.round(amount) / Math.abs(modifier));
+  let excess = total > 360 ? total - 360 : 0;
 
   if (modifier < 0) {
-    totalH += 180;
+    total += 180;
   }
 
-  h = (totalH) % 360;
+  return {total, excess};
+}
 
-  if (modifier && excess) {
-    s = 1 - ( excess / 360 );
+function applyHsvSat(hsv, hsvChange={}, modifier=1) {
+  if (!modifier) { return hsv; }
+
+  let amount = hsvChange.s || 0;
+  let { h, s, v } = hsv;
+
+  if (modifier && amount) {
+    s = 1 - ( amount / 360 );
     s = s > 0 ? s : 0;
   }
 
-  if (modifier < 0 && excess) {
+  if (modifier < 0 && amount) {
     v = s;
   } else if (modifier > 0) {
     v = 1;
@@ -129,15 +129,37 @@ function applyHsv(hsv, amount=0, modifier=1) {
   return { h, s, v };
 }
 
-function modifyHexHsv(hex, amount=0, modifier=1) {
-  if (isNaN(amount)) {
-    console.log(`${amount} is not a valid amount`);
-    return hex;
-  }
+function applyHsvHue(hsv, hsvChange={}, modifier=1) {
+  if (!modifier) { return hsv; }
 
-  let hsv = hexToHsv(hex);
-  hsv = applyHsv(hsv, amount, modifier);
-  return hsvToHex(hsv);
+  let { h, s, v } = hsv;
+  let totalH = handleOverflow(h, hsvChange.h, modifier).total;
+
+  h = (totalH) % 360;
+
+  return { h, s, v };
 }
 
-export default { modifyHexHsv, hsvToHex };
+function modifyHex(transform, hex, ...params) {
+  let hsv = hexToHsv(hex);
+  let transformed = transform(hsv, ...params);
+  return hsvToHex(transformed);
+}
+
+function modifyHexHue(hex, ...params) {
+  return modifyHex(applyHsvHue, hex, ...params);
+}
+
+function modifyHexSaturation(hex, ...params) {
+  return modifyHex(applyHsvSat, hex, ...params);
+}
+
+function modifyHexHsv(hex, ...params) {
+  let hsv = hexToHsv(hex);
+  let hued = applyHsvHue(hsv, ...params);
+  let sated = applyHsvSat(hued, ...params);
+
+  return hsvToHex(sated);
+}
+
+export default { modifyHexHsv, modifyHexHue, modifyHexSaturation, hsvToHex };

@@ -1,5 +1,3 @@
-import colorStore from '../stores/colorStore';
-
 class Nav extends React.Component {
   constructor(props) {
     super(props);

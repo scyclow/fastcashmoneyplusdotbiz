@@ -12,23 +12,23 @@ class ColorStore {
     };
 
     mouseHandler.register(this, (coords) => {
-      colorStore.updateStyles(coords.target.distance);
+      let h = coords.target.distance;
+      let s = coords.scrollY;
+      this.update({h, s});
     });
-
-    this.updateStyles();
   }
 
-  updateStyles(amount=0) {
-    this.colors.primary = modifyHexHsv(this.baseColor, amount, mod);
-    this.colors.inverse = modifyHexHsv(this.baseColor, amount, -mod);
+  update({h, s}) {
+    this.colors.primary = modifyHexHsv(this.baseColor, {h, s}, mod);
+    this.colors.inverse = modifyHexHsv(this.baseColor, {h, s}, -mod);
   }
 
-  primary(amount=0) {
-    return modifyHexHsv(this.colors.primary, amount, mod);
+  primary(h=0, s=0) {
+    return modifyHexHsv(this.colors.primary, {h, s}, mod);
   }
 
-  inverse(amount=0) {
-    return modifyHexHsv(this.colors.inverse, amount, -mod);
+  inverse(h=0, s=0) {
+    return modifyHexHsv(this.colors.inverse, {h, s}, -mod);
   }
 }
 
