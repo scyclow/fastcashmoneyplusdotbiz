@@ -1,4 +1,5 @@
 import mouseHandler from '../handlers/mouseHandler';
+import timeHandler from '../handlers/timeHandler';
 import { modifyHexHsv } from '../helpers/colors';
 
 const mod = 3;
@@ -6,10 +7,11 @@ const mod = 3;
 class ColorStore {
   constructor() {
     this.baseColor = '#ff0000';
-    this.colors = {
-      primary: this.baseColor,
-      inverse: modifyHexHsv(this.baseColor, 0, -mod)
-    };
+    let primary = this.baseColor;
+    let inverse = modifyHexHsv(this.baseColor, 0, -mod);
+    let special = modifyHexHsv(this.baseColor, 0, -mod);
+
+    this.colors = { primary, inverse, special };
 
     mouseHandler.register(this, (coords) => {
       let h = coords.target.distance;
@@ -32,6 +34,6 @@ class ColorStore {
   }
 }
 
-let colorStore = new ColorStore();
+const colorStore = new ColorStore();
 
 export default colorStore;

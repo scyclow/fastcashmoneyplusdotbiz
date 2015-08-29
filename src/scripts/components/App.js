@@ -20,8 +20,9 @@ class App extends React.Component {
   updateColors() {
     let primary = colorStore.colors.primary;
     let inverse = colorStore.colors.inverse;
+    let special = colorStore.colors.special;
 
-    this.state.colors = { primary, inverse };
+    this.state.colors = { primary, inverse, special };
 
     Object.assign(this.style, {
       color: inverse,
