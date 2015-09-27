@@ -1,3 +1,5 @@
+import React from 'react';
+
 import CallToAction from './CallToAction';
 import mouseHandler from '../handlers/mouseHandler';
 import Tone from '../handlers/audioHandler';

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import Nav from './Nav';
 import LandingPage from './LandingPage';
 import Footer from './Footer';

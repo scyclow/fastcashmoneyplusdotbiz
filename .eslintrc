@@ -12,11 +12,13 @@
     "es6": true,
     "node": true
   },
+  "extends": "airbnb",
   "rules": {
-    "quotes": [2, "single"],
-    "eqeqeq": 1,
-    "consistent-return": 0,
-    "no-underscore-dangle": 0
+    "comma-dangle": 0,
+    "new-cap": 0,
+    "prefer-const": 0,
+    "react/prop-types": 0,
+    "one-var": 0
   },
   "globals": {
     "React": false

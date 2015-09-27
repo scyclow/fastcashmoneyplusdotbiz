@@ -1,3 +1,5 @@
+import React from 'react';
+
 import mouseHandler from '../handlers/mouseHandler';
 
 class CallToAction extends React.Component {
