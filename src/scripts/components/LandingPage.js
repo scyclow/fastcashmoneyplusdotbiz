@@ -28,7 +28,7 @@ class LandingPage extends React.Component {
   }
 
   componentWillUnmount() {
-    mouseHandler.unregister(this.registrationKey);
+    mouseHandler.unregister(this);
     this.tone1.kill();
     this.tone2.kill();
   }

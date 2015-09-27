@@ -1,5 +1,8 @@
-class TimeHandler {
+import baseHandler from './baseHandler';
+
+class TimeHandler extends baseHandler {
   constructor() {
+    super();
     this._span = 1000;
   }
 
@@ -10,6 +13,11 @@ class TimeHandler {
   set span(newSpan) {
     this._span = newSpan;
     return this._span;
+  }
+
+  execute(fn) {
+    fn();
+    // e = fn(); wait this._span
   }
 }
 

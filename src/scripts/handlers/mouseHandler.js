@@ -1,6 +1,8 @@
-class MouseHandler {
+import baseHandler from './baseHandler';
+
+class MouseHandler extends baseHandler {
   constructor() {
-    this._queue = new Map();
+    super();
     this._targetCoords = { x: 0, y: 0 };
     this._coords = {
       x: 0,
@@ -15,6 +17,10 @@ class MouseHandler {
 
     document.onmousemove = (e) => this._onMouseMove(e);
     window.addEventListener('scroll', () => this.scrollY = window.scrollY);
+  }
+
+  execute(fn) {
+    fn(this.coords);
   }
 
   _onMouseMove(e) {
@@ -48,21 +54,6 @@ class MouseHandler {
 
   get scrollY() {
     return this._coords.scrollY;
-  }
-
-  update() {
-    for (let fn of this._queue.values()) {
-      fn(this.coords);
-    }
-  }
-
-  register(obj, fn) {
-    this._queue.set(obj, fn);
-    this.update();
-  }
-
-  unregister(obj) {
-    this._queue.delete(obj);
   }
 
   getTargetDistance(coords) {

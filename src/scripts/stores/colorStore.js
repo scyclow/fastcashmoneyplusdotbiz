@@ -1,5 +1,5 @@
 import mouseHandler from '../handlers/mouseHandler';
-import timeHandler from '../handlers/timeHandler';
+// import timeHandler from '../handlers/timeHandler';
 import { modifyHexHsv } from '../helpers/colors';
 
 const mod = 3;
