@@ -11,7 +11,7 @@ class Nav extends React.Component {
       position: 'fixed',
       width: '100%',
       textAlign: 'center',
-      fontSize: 20
+      fontSize: 21
     };
   }
 

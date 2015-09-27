@@ -25,11 +25,11 @@ class ColorStore {
     this.colors.inverse = modifyHexHsv(this.baseColor, {h, s}, -mod);
   }
 
-  primary(h=0, s=0) {
+  primary(h = 0, s = 0) {
     return modifyHexHsv(this.colors.primary, {h, s}, mod);
   }
 
-  inverse(h=0, s=0) {
+  inverse(h = 0, s = 0) {
     return modifyHexHsv(this.colors.inverse, {h, s}, -mod);
   }
 }

@@ -25,9 +25,29 @@ class CallToAction extends React.Component {
     mouseHandler.target();
   }
 
+  onHover() {
+    this.setState({ hover: true });
+  }
+
+  onUnHover() {
+    this.setState({ hover: false, clicked: false });
+  }
+
+  onMouseDown() {
+    this.setState({ clicked: true });
+  }
+
+  onMouseUp() {
+    this.setState({ clicked: false });
+  }
+
+  onClick() {
+    this.onMouseDown();
+  }
+
   updateStyles() {
     let p = this.props.colors.primary;
-    let i = this.props.colors.inverse;
+    let i = this.props.colors.special;
 
     let [ primary, inverse, shadow ] = this.state.hover ?
       [ p, i, this.hoverDist ] : [ i, p, 0 ];
@@ -50,26 +70,6 @@ class CallToAction extends React.Component {
       borderColor: primary,
       position: 'relative'
     }, clickProps);
-  }
-
-  onHover() {
-    this.setState({ hover: true });
-  }
-
-  onUnHover() {
-    this.setState({ hover: false, clicked: false });
-  }
-
-  onMouseDown() {
-    this.setState({ clicked: true });
-  }
-
-  onMouseUp() {
-    this.setState({ clicked: false });
-  }
-
-  onClick() {
-    this.onMouseDown();
   }
 
   render() {

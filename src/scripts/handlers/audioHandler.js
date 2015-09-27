@@ -3,7 +3,7 @@
 const tones = new Set();
 
 class Tone {
-  constructor(startValue=200) {
+  constructor(startValue = 200) {
     this.aCtx = new (window.AudioContext || window.webkitAudioContext)();
     this.gainNode = this.aCtx.createGain();
     this.gainNode.connect(this.aCtx.destination);
@@ -55,12 +55,12 @@ class Tone {
     tones.delete(this);
   }
 
-  upNote(step=8) {
+  upNote(step = 8) {
     const val = this.freq;
     this.freq += val / step;
   }
 
-  downNote(step=8) {
+  downNote(step = 8) {
     const val = this.freq;
     this.freq -= (val * 0.5) / step;
   }
