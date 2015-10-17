@@ -27,7 +27,11 @@ class Nav extends React.Component {
 
     return (
       <div className="nav-container">
-        <nav style={this.style}>nav</nav>
+        <nav style={this.style}>
+          FA$TCA$HMONEYPLU$.biz
+          <br />
+          >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$++++++++++++++++++++++++++++++++++++++
+        </nav>
         <div style={this.fillerStyle}></div>
       </div>
     );
