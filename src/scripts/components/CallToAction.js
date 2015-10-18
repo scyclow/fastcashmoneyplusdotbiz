@@ -1,17 +1,37 @@
 import React from 'react';
 
 import mouseHandler from '../handlers/mouseHandler';
+const sample = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 class CallToAction extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { hover: false, clicked: false };
+  componentWillMount() {
     this.hoverDist = 20;
     this.style = {
       width: 400,
       height: 400,
       borderRadius: 10
+    };
+
+    const texts = [
+      'CLICK HERE',
+      'GET STARTED NOW',
+      'SAFE & SECURE',
+      'QUICK APPROVAL',
+      '100% ONLINE',
+      'FUEL YOUR DREAMS TODAY',
+      'NEED FAST CASH?',
+      'NEED CASH FAST?'
+    ];
+
+    setInterval(
+      () => this.setState({ text: sample(texts) }),
+      2000
+    );
+
+    this.state = {
+      hover: false,
+      clicked: false,
+      text: texts[0]
     };
   }
 
@@ -68,7 +88,11 @@ class CallToAction extends React.Component {
       backgroundColor: inverse,
       color: primary,
       borderColor: primary,
-      position: 'relative'
+      position: 'relative',
+      fontSize: 80,
+      width: '100%',
+      marginTop: 20,
+      marginBottom: 20
     }, clickProps);
   }
 
@@ -84,7 +108,7 @@ class CallToAction extends React.Component {
         onClick={() => this.onClick()}
         onMouseUp={() => this.onMouseUp()}
       >
-        CLICK HERE
+        {this.state.text}
       </button>
     );
   }

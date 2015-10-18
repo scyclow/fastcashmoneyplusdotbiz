@@ -1,4 +1,5 @@
 import React from 'react';
+import NavTicker from './NavTicker';
 
 class Nav extends React.Component {
   constructor(props) {
@@ -24,13 +25,12 @@ class Nav extends React.Component {
 
   render() {
     this.updateColors();
-
     return (
       <div className="nav-container">
         <nav style={this.style}>
           FA$TCA$HMONEYPLU$.biz
           <br />
-          >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$++++++++++++++++++++++++++++++++++++++
+          <NavTicker />
         </nav>
         <div style={this.fillerStyle}></div>
       </div>

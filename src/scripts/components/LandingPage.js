@@ -37,7 +37,8 @@ class LandingPage extends React.Component {
     return (
       <div style={this.style}>
         <div className="tag-line" style={{
-          height: 50
+          height: 50,
+          fontSize: 24,
         }}>
           Congratulations! You have just discovered a very rare opportunity to achieve untold amounts of wealth. FastCashMoneyPlus.biz is the premier FastCash accumulation platform on the web today!
           <br/>
@@ -45,19 +46,19 @@ class LandingPage extends React.Component {
         </div>
         <CallToAction colors={this.props.colors}/>
         <br/>
+        {otherCrap}
+        <br/>
+        <br/>
         {legalCopy}
       </div>
     );
   }
 }
 
-const legalCopy = `
-
+const otherCrap = `
 You can join thousands of people jsut like yourself who have alread realized their dreams by using FastCashMoneyPlus.biz's patented multi-level crowd-sourcing distribution process. Moreover, all users who sign up by {{Date.now()+(5*24*60*60*1000)|format:'shortDate'}} will even receive a substantial FastCash, the value of which will undoubtedly appreciate over time. Trust us, you want to get in on the ground floor.
-
-
-
-
+`;
+const legalCopy = `
 
 The speculations quoted represent past performance and do not guarantee future results. Investment return and principal value of an investment will fluctuate so that an investor’s FastCash, when sold or redeemed, may be worth more or less than the original cost.
 
