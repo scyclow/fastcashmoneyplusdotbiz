@@ -1,15 +1,9 @@
 import React from 'react';
 
-class Footer extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <footer>footer</footer>
-    );
-  }
-}
+const Footer = ({ year }) => (
+  <footer>
+    (c) FastCashMoneyPlus.biz {year}
+  </footer>
+);
 
 export default Footer;

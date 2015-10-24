@@ -1,6 +1,6 @@
 import React from 'react';
+import ReactDOM from 'react';
 
-import mouseHandler from '../handlers/mouseHandler';
 const sample = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 class CallToAction extends React.Component {
@@ -36,13 +36,12 @@ class CallToAction extends React.Component {
   }
 
   componentDidMount() {
-    this.elem = React.findDOMNode(this);
-
-    mouseHandler.target(this.elem, -this.hoverDist);
+    this.elem = ReactDOM.findDOMNode(this);
+    this.props.mouseHandler.target(this.elem, -this.hoverDist);
   }
 
   componentWillUnmount() {
-    mouseHandler.target();
+    this.props.mouseHandler.target();
   }
 
   onHover() {
@@ -65,6 +64,8 @@ class CallToAction extends React.Component {
     this.onMouseDown();
   }
 
+  // I'm sure there is a better way to do this...
+  // But at least the mess isn't spilling out.
   updateStyles() {
     let p = this.props.colors.primary;
     let i = this.props.colors.special;

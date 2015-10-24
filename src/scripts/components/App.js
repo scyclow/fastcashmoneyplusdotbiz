@@ -7,8 +7,7 @@ import mouseHandler from '../handlers/mouseHandler';
 import colorStore from '../stores/colorStore';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
+  componentWillMount() {
     this.style = {};
     this.state = {
       colors: {}
@@ -20,9 +19,7 @@ class App extends React.Component {
   }
 
   updateColors() {
-    let primary = colorStore.colors.primary;
-    let inverse = colorStore.colors.inverse;
-    let special = colorStore.colors.special;
+    const { primary, inverse, special } = colorStore.colors;
 
     this.state.colors = { primary, inverse, special };
 
@@ -39,8 +36,8 @@ class App extends React.Component {
     return (
       <div style={this.style}>
         <Nav colors={colors} />
-        <LandingPage colors={colors} />
-        <Footer colors={colors} />
+        <LandingPage colors={colors} mouseHandler={mouseHandler}/>
+        <Footer colors={colors} year={2013}/>
       </div>
     );
   }
