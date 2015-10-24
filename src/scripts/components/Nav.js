@@ -1,41 +1,27 @@
 import React from 'react';
 import NavTicker from './NavTicker';
 
-class Nav extends React.Component {
-  constructor(props) {
-    super(props);
+const Nav = ({ colors }) => {
+  const height = 50;
+  const style = {
+    height,
+    position: 'fixed',
+    width: '100%',
+    textAlign: 'center',
+    fontSize: 21,
+    color: colors.primary,
+    backgroundColor: colors.inverse
+  };
 
-    const height = 50;
-    this.fillerStyle = { height };
-    this.style = {
-      height,
-      position: 'fixed',
-      width: '100%',
-      textAlign: 'center',
-      fontSize: 21
-    };
-  }
-
-  updateColors() {
-    Object.assign(this.style, {
-      color: this.props.colors.primary,
-      backgroundColor: this.props.colors.inverse
-    });
-  }
-
-  render() {
-    this.updateColors();
-    return (
-      <div className="nav-container">
-        <nav style={this.style}>
-          FA$TCA$HMONEYPLU$.biz
-          <br />
-          <NavTicker />
-        </nav>
-        <div style={this.fillerStyle}></div>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="nav-container">
+      <nav style={style}>
+        FA$TCA$HMONEYPLU$.biz
+        <NavTicker />
+      </nav>
+      <div style={{ height }}></div>
+    </div>
+  );
+};
 
 export default Nav;
