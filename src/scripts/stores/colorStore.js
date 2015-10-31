@@ -1,17 +1,14 @@
 import mousePosition from '../signals/mousePosition';
 // import timeHandler from '../handlers/timeHandler';
-import { modifyHexHsv } from '../utilities/colors';
+import { applyToHex } from '../utilities/colors';
 
 const mod = 3;
+const primary = Symbol('primary');
 
 class ColorStore {
   constructor() {
     this.baseColor = '#ff0000';
-    let primary = this.baseColor;
-    let inverse = modifyHexHsv(this.baseColor, 0, -mod);
-    let special = modifyHexHsv(this.baseColor, 0, -mod);
-
-    this.colors = { primary, inverse, special };
+    this[primary] = this.baseColor;
 
     mousePosition.register(this, (coords) => {
       let h = coords.target.distance;
@@ -21,16 +18,27 @@ class ColorStore {
   }
 
   update({h, s}) {
-    this.colors.primary = modifyHexHsv(this.baseColor, {h, s}, mod);
-    this.colors.inverse = modifyHexHsv(this.baseColor, {h, s}, -mod);
+    this[primary] = applyToHex(this.baseColor, {h, s}, mod);
   }
 
-  primary(h = 0, s = 0) {
-    return modifyHexHsv(this.colors.primary, {h, s}, mod);
+  get colors() {
+    return {
+      primary: this.primary,
+      inverse: this.inverse,
+      secondary: this.secondary,
+    };
   }
 
-  inverse(h = 0, s = 0) {
-    return modifyHexHsv(this.colors.inverse, {h, s}, -mod);
+  get primary() {
+    return this[primary];
+  }
+
+  get inverse() {
+    return applyToHex(this.primary, { h: 180 });
+  }
+
+  get special() {
+    return applyToHex(this.primary, { h: 180 });
   }
 }
 

@@ -1,42 +1,36 @@
-// 255 => 'ff'
-function cToHex(c) {
-  let hex = Math.round(c).toString(16);
-  return (hex.length === 1) ? '0' + hex : hex;
+function numToHex(num) {
+  let hex = Math.round( Math.min(num, 255) ).toString(16);
+  return (hex.length === 1 ? '0' + hex : hex).toUpperCase();
 }
 
-// { r:255, g:0, b:0 } => '#ff0000'
-function rgbToHex(rgb) {
-  let r = cToHex(rgb.r);
-  let g = cToHex(rgb.g);
-  let b = cToHex(rgb.b);
+const hexToNum = (hex) => parseInt(hex, 16);
 
-  return ['#', r, g, b].join('');
-}
+const rgbToHex = ({r, g, b}) =>
+  '#' + numToHex(r) + numToHex(g) + numToHex(b);
 
-// 'ff' => 255
-function hexToC(hex) {
-  return parseInt(hex, 16);
-}
-// '#ff0000' => { r:255, g:0, b:0 }
-function hexToRgb(hex) {
-  let r = hexToC( hex.slice(1, 3) );
-  let g = hexToC( hex.slice(3, 5) );
-  let b = hexToC( hex.slice(5, 7) );
+const hexToRgb = (hex) => hex.length === 7 ? {
+    r: hexToNum( hex.slice(1, 3) ),
+    g: hexToNum( hex.slice(3, 5) ),
+    b: hexToNum( hex.slice(5, 7) )
+  } : {
+    r: hexToNum( hex.slice(1, 2).repeat(2) ),
+    g: hexToNum( hex.slice(2, 3).repeat(2) ),
+    b: hexToNum( hex.slice(3, 4).repeat(2) )
+  };
 
-  return {r: r, g: g, b: b};
-}
+const round = (n, decimals=0) => +n.toFixed(decimals);
 
 // http://www.rapidtables.com/convert/color/rgb-to-hsv.htm
-// {r: 255, g: 0, b: 255} => {h: 100, s: 1, v: 1}
-function rgbToHsv(rgb) {
-  let r = rgb.r / 255;
-  let g = rgb.g / 255;
-  let b = rgb.b / 255;
-  let max = Math.max(r, g, b);
-  let min = Math.min(r, g, b);
-  let diff = max - min;
-  let value = max;
-  let saturation = max ? diff / max : 0;
+function rgbToHsv({r, g, b}) {
+  r /= 255;
+  g /= 255;
+  b /= 255;
+
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const diff = max - min;
+  const value = max;
+  const saturation = max ? diff / max : 0;
 
   let hue;
   if (!diff) {
@@ -56,17 +50,21 @@ function rgbToHsv(rgb) {
 
   hue *= 60;
 
-  return {h: hue, s: saturation, v: value};
+  return {
+    h: (hue === 360) ? 0 : hue,
+    s: round(saturation, 2),
+    v: round(value, 2)
+  };
 }
 
-function hsvToRgb(hsv) {
-  let c = hsv.v * hsv.s;
-  let h = hsv.h / 60;
-  let x = c * (1 - Math.abs(h % 2 - 1));
-  let m = hsv.v - c;
+function hsvToRgb({h, s, v}) {
+  h /= 60;
+  const c = v * s;
+  const x = c * (1 - Math.abs(h % 2 - 1));
+  const m = v - c;
 
   let r, g, b;
-  switch( Math.floor(h) ) {
+  switch (Math.floor(h)) {
     case 0:
     case 6:
       r = c; g = x; b = 0; break;
@@ -83,83 +81,36 @@ function hsvToRgb(hsv) {
   }
 
   return {
-    r: (r + m) * 255,
-    g: (g + m) * 255,
-    b: (b + m) * 255
+    r: round((r + m) * 255),
+    g: round((g + m) * 255),
+    b: round((b + m) * 255)
   };
 }
 
-function hsvToHex(hsv) {
-  let rgb = hsvToRgb(hsv);
-  return rgbToHex(rgb);
-}
+const hexToHsv = (hex) => rgbToHsv( hexToRgb(hex) );
+const hsvToHex = (hsv) => rgbToHex( hsvToRgb(hsv) );
 
-function hexToHsv(hex) {
-  return rgbToHsv( hexToRgb(hex) );
-}
+const wrapAround = (number, max) => (
+  number >= max ? wrapAround(number - max, max) :
+  number < 0    ? wrapAround(max + number, max) :
+  number
+);
 
-function handleOverflow(original, amount, modifier) {
-  let total = original + (Math.round(amount) / Math.abs(modifier));
-  let excess = total > 360 ? total - 360 : 0;
-
-  if (modifier < 0) {
-    total += 180;
-  }
-
-  return {total, excess};
-}
-
-function applyHsvSat(hsv, hsvChange={}, modifier=1) {
-  if (!modifier) { return hsv; }
-
-  let amount = hsvChange.s || 0;
-  let { h, s, v } = hsv;
-
-  if (modifier && amount) {
-    s = 1 - ( amount / 360 );
-    s = s > 0 ? s : 0;
-  }
-
-  if (modifier < 0 && amount) {
-    v = s;
-  } else if (modifier > 0) {
-    v = 1;
-  }
-
-  return { h, s, v };
-}
-
-function applyHsvHue(hsv, hsvChange={}, modifier=1) {
-  if (!modifier) { return hsv; }
-
-  let { h, s, v } = hsv;
-  let totalH = handleOverflow(h, hsvChange.h, modifier).total;
-
-  h = (totalH) % 360;
-
-  return { h, s, v };
-}
-
-function modifyHex(transform, hex, ...params) {
+function applyToHex(hex, {h=0, s=0, v=0} = {}, mod=1) {
   let hsv = hexToHsv(hex);
-  let transformed = transform(hsv, ...params);
-  return hsvToHex(transformed);
+  return hsvToHex({
+    h: wrapAround(hsv.h + (h / mod), 360),
+    s:   Math.min(hsv.s + (s / mod),   1),
+    v:   Math.min(hsv.v + (v / mod),   1)
+  });
 }
 
-function modifyHexHue(hex, ...params) {
-  return modifyHex(applyHsvHue, hex, ...params);
-}
-
-function modifyHexSaturation(hex, ...params) {
-  return modifyHex(applyHsvSat, hex, ...params);
-}
-
-function modifyHexHsv(hex, ...params) {
-  let hsv = hexToHsv(hex);
-  let hued = applyHsvHue(hsv, ...params);
-  let sated = applyHsvSat(hued, ...params);
-
-  return hsvToHex(sated);
-}
-
-export default { modifyHexHsv, modifyHexHue, modifyHexSaturation, hsvToHex };
+export default {
+  applyToHex,
+  hexToNum,
+  hexToRgb,
+  hsvToRgb,
+  numToHex,
+  rgbToHex,
+  rgbToHsv
+};
