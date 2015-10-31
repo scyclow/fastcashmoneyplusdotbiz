@@ -1,5 +1,3 @@
-
-
 const tones = new Set();
 
 class Tone {

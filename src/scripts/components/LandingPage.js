@@ -1,14 +1,13 @@
 import React from 'react';
-
 import CallToAction from './CallToAction';
 import LegalJargon from './LegalJargon';
-import Tone from '../handlers/audioHandler';
-import landingCopy from '../helpers/landingCopy';
+import Tone from '../utilities/tone';
+import landingCopy from '../resources/landingCopy';
 
 class LandingPage extends React.Component {
   componentDidMount() {
     const toneChange = this.setupTone();
-    this.props.mouseHandler.register(this, toneChange);
+    this.props.mousePosition.register(this, toneChange);
   }
 
   componentWillUnmount() {
@@ -32,7 +31,7 @@ class LandingPage extends React.Component {
   }
 
   killTone() {
-    this.props.mouseHandler.unregister(this);
+    this.props.mousePosition.unregister(this);
     this.tone1.kill();
     this.tone2.kill();
   }
@@ -61,7 +60,7 @@ class LandingPage extends React.Component {
         </div>
         <CallToAction
           colors={this.props.colors}
-          mouseHandler={this.props.mouseHandler}
+          mousePosition={this.props.mousePosition}
         />
         {otherCrap}
         <LegalJargon copy={landingCopy} />

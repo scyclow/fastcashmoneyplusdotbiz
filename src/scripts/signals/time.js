@@ -1,6 +1,6 @@
-import baseHandler from './baseHandler';
+import Signal from './signal';
 
-class TimeHandler extends baseHandler {
+class TimeHandler extends Signal {
   constructor() {
     super();
     this._span = 1000;

@@ -1,6 +1,6 @@
-import baseHandler from './baseHandler';
+import Signal from './signal';
 
-class MouseHandler extends baseHandler {
+class MousePosition extends Signal {
   constructor() {
     super();
     this._targetCoords = { x: 0, y: 0 };
@@ -78,6 +78,6 @@ class MouseHandler extends baseHandler {
   }
 }
 
-const mouseHandler = new MouseHandler();
+const mousePosition = new MousePosition();
 
-export default mouseHandler;
+export default mousePosition;

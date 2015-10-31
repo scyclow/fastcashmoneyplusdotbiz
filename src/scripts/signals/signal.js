@@ -1,4 +1,4 @@
-class BaseHandler {
+class Signal {
   constructor() {
     this._subs = new Map();
     this._queue = [];
@@ -40,4 +40,4 @@ class BaseHandler {
   }
 }
 
-export default BaseHandler;
+export default Signal;

@@ -1,6 +1,6 @@
-import mouseHandler from '../handlers/mouseHandler';
+import mousePosition from '../signals/mousePosition';
 // import timeHandler from '../handlers/timeHandler';
-import { modifyHexHsv } from '../helpers/colors';
+import { modifyHexHsv } from '../utilities/colors';
 
 const mod = 3;
 
@@ -13,7 +13,7 @@ class ColorStore {
 
     this.colors = { primary, inverse, special };
 
-    mouseHandler.register(this, (coords) => {
+    mousePosition.register(this, (coords) => {
       let h = coords.target.distance;
       let s = coords.scrollY;
       this.update({h, s});

@@ -1,5 +1,5 @@
 import React from 'react';
-// import currencySymbols from '../helpers/currencySymbols';
+// import currencySymbols from '../resources/currencySymbols';
 
 // const sample = (arr) => arr[Math.floor(Math.random() * arr.length)];
 // const sampleTimes = (arr, times) => {
