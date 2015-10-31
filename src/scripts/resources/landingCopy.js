@@ -57,11 +57,13 @@ const ending = () =>
     `We always appreciate your feedback or other suggestions about ${fcmp.lowercase}, but you understand that we may use your feedback or suggestions without any obligation to compensate you for them.`
   );
 
-export default [
+const copy = [
   forwardLookingStatements,
-  warranty,
+  intellectualProperty,
   forumSelection,
   rightsAndResponsabilities,
-  intellectualProperty,
+  warranty,
   ending
 ].map((section, ix) => section(ix + 1));
+
+export default copy;

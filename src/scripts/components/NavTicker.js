@@ -1,4 +1,5 @@
 import React from 'react';
+import times from 'lodash/utility/times';
 // import currencySymbols from '../resources/currencySymbols';
 
 // const sample = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -28,15 +29,15 @@ class NavTicker extends React.Component {
 
     // TODO: auto generate quantity
     // maybe make responsive at some point
-    this.quantity = 40;
-
+    const quantity = this.quantity = 40;
 
     let output = [];
-    for (let i = 0; i < this.quantity; i++) output.push(this.allChars.fast);
-    for (let i = 0; i < this.quantity; i++) output.push(<span>{'$'}</span>);
-    for (let i = 0; i < this.quantity; i++) output.push(this.allChars.plus);
+    times(quantity, () => output.push(this.allChars.fast));
+    times(quantity, () => output.push(<span>{'$'}</span>));
+    times(quantity, () => output.push(this.allChars.plus));
+
     this.state = {
-      currencyIx: this.quantity,
+      currencyIx: quantity,
       output
     };
   }
