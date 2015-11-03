@@ -1,100 +1,44 @@
 import React from 'react';
 import times from 'lodash/utility/times';
-// import currencySymbols from '../resources/currencySymbols';
-
-// const sample = (arr) => arr[Math.floor(Math.random() * arr.length)];
-// const sampleTimes = (arr, times) => {
-//   let out = [];
-//   for (let t = times; t; t--) {
-//     out.push(<span>{sample(arr)}</span>);
-//   }
-//   return out;
-// };
 
 class NavTicker extends React.Component {
   componentWillMount() {
-    // const cashMoney = currencySymbols.reduce((symbols, sym) => {
-    //   let { prob, code } = sym;
-    //   while (prob--) {
-    //     symbols.push(<span>{code}</span>);
-    //   }
-    //   return symbols;
-    // }, []);
-
     this.allChars = {
       fast: <span>{'>'}</span>,
+      cash: <span>{'$'}</span>,
       plus: <span>{'+'}</span>
-      // cashMoney,
     };
 
     // TODO: auto generate quantity
     // maybe make responsive at some point
     const quantity = this.quantity = 40;
 
-    let output = [];
-    times(quantity, () => output.push(this.allChars.fast));
-    times(quantity, () => output.push(<span>{'$'}</span>));
-    times(quantity, () => output.push(this.allChars.plus));
+    let ticker = [];
+    times(quantity, () => ticker.push(this.allChars.fast));
+    times(quantity, () => ticker.push(this.allChars.cash));
+    times(quantity, () => ticker.push(this.allChars.plus));
 
-    this.state = {
-      currencyIx: quantity,
-      output
-    };
+    this.state = { ticker };
   }
 
   // TODO: change currency symbols. react is weird with utf8 codes
   componentDidMount() {
     setInterval(
-      () => this.setState( this.getStaticTicker() ),
+      () => this.setState( this.getTicker() ),
       25
     );
   }
 
-  getStaticTicker() {
-    let {output} = this.state;
-    let last = output.pop();
-    output.unshift(last);
-    return {output};
+  getTicker() {
+    let { ticker } = this.state;
+    let last = ticker.pop();
+    ticker.unshift(last);
+    return { ticker };
   }
-
-  // getBase() {
-  //   const base = [];
-  //   for (let p = this.quantity; p; p--) {
-  //     base.unshift(this.allChars.fast);
-  //     base.push(this.allChars.plus);
-  //   }
-  //   return base;
-  // }
-
-  // getTicker() {
-  //   let output = this.getBase();
-  //   let { currencyIx } = this.state;
-
-  //   let front = Math.max(currencyIx - output.length, 0);
-
-  //   for (let f = front; f; f--) {
-  //     output.unshift('$');
-  //   }
-
-  //   for (
-  //     let rest = this.quantity - front, ix = currencyIx;
-  //     rest;
-  //     rest--, ix++
-  //   ) {
-  //     output.splice(ix, 0, '$');
-  //   }
-
-  //   currencyIx += 1;
-  //   if (currencyIx >= output.length) {
-  //     currencyIx = 0;
-  //   }
-
-  //   return { currencyIx, output };
-  // }
 
   render() {
     return (
-      <div>{ this.state.output }</div>
+      <div>{ this.state.ticker }</div>
     );
   }
 }
