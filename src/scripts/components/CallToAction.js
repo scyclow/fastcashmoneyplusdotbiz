@@ -31,11 +31,21 @@ class CallToAction extends React.Component {
 
   componentDidMount() {
     const elem = ReactDOM.findDOMNode(this);
-    this.props.mousePosition.target(elem, -this.hover);
+    const disp = -this.hover;
+
+    let x, y;
+    if (elem) {
+      x = elem.offsetLeft + disp + (elem.offsetWidth / 2);
+      y = elem.offsetTop + disp + (elem.offsetHeight / 2);
+    } else {
+      [x, y] = [0, 0];
+    }
+
+    this.props.mouseTarget.mount({ x, y });
   }
 
   componentWillUnmount() {
-    this.props.mousePosition.target();
+    this.props.mouseTarget.unmount();
   }
 
   stateStyles() {

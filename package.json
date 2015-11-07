@@ -4,7 +4,7 @@
   "name": "FastCashMoneyPlus.biz",
   "version": "0.1.0",
   "description": "The best FastCashMoney site on the web!",
-  "homepage": "http://fastcashmoneyplus.biz",
+  "homepage": "http://prototype.fastcashmoneyplus.biz",
   "bugs": "https://github.com/scyclow/fastcashmoneyplusdotbiz/issues",
   "main": "src/scripts/app.js",
   "repository": {
@@ -13,7 +13,7 @@
   },
   "scripts": {
     "clean": "rm ./build/*",
-    "watch": "rm ./build/* && webpack -watch"
+    "watch": "rm ./build/* && webpack && webpack -watch"
   },
   "dependencies": {
     "babel-core": "^5.8.25",
@@ -21,9 +21,8 @@
     "lodash": "^3.10.1",
     "radium": "^0.14.3",
     "react": "^0.14.0",
-    "react-redux": "^2.1.2",
-    "redux": "^3.0.0",
-    "redux-thunk": "^0.1.0"
+    "react-redux": "^4.0.0",
+    "redux": "^3.0.4"
   },
   "devDependencies": {
     "babel": "^5.8.5",
