@@ -7,7 +7,7 @@ function onMouseMove(fn) {
 }
 
 function onScroll(fn) {
-  return window.addEventListener('scroll', fn());
+  return window.addEventListener('scroll', fn);
 }
 
 export default { onMouseMove, onScroll };

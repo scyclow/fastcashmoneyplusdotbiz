@@ -7,6 +7,11 @@ import landingCopy from '../resources/landingCopy';
 class LandingPage extends React.Component {
   componentDidMount() {
     this.setupTone();
+
+    window.onkeydown = (e) =>
+      e.keyCode === 77 ? this.killTone() :
+      e.keyCode === 78 ? this.setupTone() :
+      null;
   }
 
   componentWillUnmount() {

@@ -29,10 +29,10 @@ function removeTarget(id) {
   };
 }
 
-function pageScroll(scrollY) {
+function pageScroll() {
   return {
     type: types.PAGE_SCROLL,
-    scrollY
+    scrollY: window.scrollY
   };
 }
 

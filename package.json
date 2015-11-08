@@ -13,7 +13,8 @@
   },
   "scripts": {
     "clean": "rm ./build/*",
-    "watch": "rm ./build/* && webpack && webpack -watch"
+    "watch": "rm ./build/* && webpack && webpack -watch",
+    "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base build"
   },
   "dependencies": {
     "babel-core": "^5.8.25",
