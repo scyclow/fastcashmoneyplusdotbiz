@@ -35,7 +35,9 @@ class Tone {
   }
 
   set volume(val) {
-    let out = this.gainNode.gain.value = Math.max(val, 0.05);
+    const out = this.gainNode.gain.value = Math.max(
+      Math.min(val, 0.05), 0
+    );
     return out;
   }
 
