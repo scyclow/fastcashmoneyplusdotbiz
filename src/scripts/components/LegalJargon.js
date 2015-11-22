@@ -2,7 +2,8 @@ import React from 'react';
 
 const sectionStyle = {
   fontSize: 16,
-  padding: 5
+  padding: 5,
+  lineHeight: 1.4
 };
 
 const jargonStyle = {

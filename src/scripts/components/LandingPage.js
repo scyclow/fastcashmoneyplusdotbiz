@@ -19,16 +19,22 @@ class LandingPage extends React.Component {
   }
 
   setupTone() {
+    const baseVolume = 0.025;
+    const scrollAdjustment = 0.0001;
     this.tone1 = new Tone(500);
     this.tone2 = new Tone(1000);
-    this.tone1.volume = 0.0005;
-    this.tone2.volume = 0.0005;
+    this.tone1.volume = baseVolume;
+    this.tone2.volume = baseVolume;
     this.tone2.type = 'sawtooth';
 
-    this.toneChange = (coords) => {
+    this.toneChange = (coords, scrollY) => {
       const dist = coords / 4;
       this.tone1.freq = Math.min(500 + dist, 2000);
       this.tone2.freq = Math.max(500 - dist, 20);
+
+      const changeVolume = scrollY * scrollAdjustment;
+      this.tone1.volume = baseVolume - (changeVolume);
+      this.tone2.volume = baseVolume + (changeVolume);
     };
   }
 
@@ -53,8 +59,14 @@ class LandingPage extends React.Component {
       fontSize: 24
     };
 
-    const { colors, mouseDistance, mouseTarget } = this.props;
-    this.toneChange(mouseDistance);
+    const {
+      colors,
+      mouseDistance,
+      mouseTarget,
+      scrollY
+    } = this.props;
+
+    this.toneChange(mouseDistance, scrollY);
 
     // ES7 ~> <CallToAction {...this.props} />
     return (

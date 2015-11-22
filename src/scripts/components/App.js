@@ -46,6 +46,7 @@ function selectColors(state) {
 function select(state) {
   return {
     colors: selectColors(state),
+    scrollY: state.mouseMovement.get('scrollY'),
     mouseDistance: state.mouseMovement.getIn(
       [ 'targets', callToActionId, 'distance' ],
       0
@@ -71,6 +72,7 @@ class App extends React.Component {
     const {
       colors,
       dispatch,
+      scrollY,
       mouseDistance
     } = this.props;
 
@@ -92,6 +94,7 @@ class App extends React.Component {
           colors={colors}
           mouseTarget={mouseTarget}
           mouseDistance={mouseDistance}
+          scrollY={scrollY}
         />
         <Footer colors={colors} year={2013}/>
       </div>
