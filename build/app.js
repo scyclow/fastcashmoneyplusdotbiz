@@ -38479,7 +38479,8 @@
 	
 	var sectionStyle = {
 	  fontSize: 16,
-	  padding: 5
+	  padding: 5,
+	  lineHeight: 1.4
 	};
 	
 	var jargonStyle = {
