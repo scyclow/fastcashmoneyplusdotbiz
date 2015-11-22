@@ -1,3 +1,6 @@
+import times from 'lodash/utility/times';
+import sample from 'lodash/collection/sample';
+
 const currencySymbols = [{
   code: '$',
   char: '$',
@@ -52,4 +55,13 @@ const currencySymbols = [{
   prob: 1
 }];
 
-export default currencySymbols;
+const currencyHat = currencySymbols.reduce((hat, currency) => {
+  times(currency.prob, () => {
+    hat.push(currency.char);
+  });
+  return hat;
+}, []);
+
+const randCurrency = () => sample(currencyHat);
+
+export default { currencySymbols, randCurrency };

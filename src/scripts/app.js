@@ -1,4 +1,4 @@
-// import 'babel-core/polyfill';
+import 'babel-core/polyfill';
 
 import { createStore } from 'redux';
 import rootReducer from './reducers/rootReducer';
